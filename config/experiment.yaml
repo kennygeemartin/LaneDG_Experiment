@@ -1,0 +1,58 @@
+project: yolov8n_lanedg_cross_dataset
+seed: 42
+datasets:
+  tusimple:
+    kaggle: manideep1108/tusimple
+    train_split: train
+    validation_split: val
+    evaluation_split: test
+  culane:
+    kaggle: manideep1108/culane
+    train_split: train
+    validation_split: val
+    evaluation_split: test
+  bdd100k:
+    kaggle: marquis03/bdd100k
+    train_split: train
+    validation_split: val
+    # Public test labels are withheld; use labeled validation for metrics.
+    evaluation_split: val
+model:
+  name: YOLOv8n-LaneDG
+  task: instance-segmentation
+  source_required: true
+training:
+  image_size: 640
+  epochs: 500
+  batch_size: 16
+  optimizer: AdamW
+  initial_learning_rate: 0.01
+  weight_decay: 0.0005
+  scheduler: cosine
+  warmup_epochs: 3
+  imagenet_mean: [0.485, 0.456, 0.406]
+  imagenet_std: [0.229, 0.224, 0.225]
+  loss_weights:
+    bce: 1.0
+    dice: 1.0
+    continuity: 0.5
+    localization: 2.0
+    classification: 1.0
+    mask: 3.0
+evaluation:
+  confidence_threshold: 0.25
+  nms_iou_threshold: 0.65
+  metrics: [precision, recall, f1, iou, map50, map50_95]
+  fine_tuning_on_target: false
+  matrix:
+    - [tusimple, tusimple]
+    - [tusimple, culane]
+    - [tusimple, bdd100k]
+    - [culane, tusimple]
+    - [culane, culane]
+    - [culane, bdd100k]
+    - [bdd100k, tusimple]
+    - [bdd100k, culane]
+    - [bdd100k, bdd100k]
+
+
