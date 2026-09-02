@@ -1,0 +1,12 @@
+datasets/
+data/locations.json
+runs/
+*.pt
+*.log
+__pycache__/
+.matplotlib/
+.pytest_cache/
+.venv/
+venv/
+lanedg_experiment/full_protocol/
+
