@@ -1,8 +1,7 @@
-kagglehub==1.0.2
-PyYAML>=6.0,<7
+# Exact rerun environment: requirements-benchmark.lock.txt
 torch>=2.5
-torchvision>=0.20
 numpy>=2.0
-opencv-python>=4.10
+opencv-python-headless>=4.10
 matplotlib>=3.9
-
+PyYAML>=6.0,<7
+pytest>=8

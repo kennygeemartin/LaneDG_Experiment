@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "trained_checkpoints": 9,
+  "evaluation_cells": 27,
+  "probability_maps_and_count_records": 1080,
+  "checks": [
+    "checkpoint identity and frozen protocol",
+    "source-validation-only epoch and threshold selection",
+    "held-out target identity",
+    "float32 probability maps and hashes",
+    "independently reconstructed TP/FP/FN/IoU",
+    "independently reconstructed pixel metrics"
+  ],
+  "protocol_sha256": "f4c2fabe7e7bfce400f6d6610bfeec81ec4d47d1fa5e31811667d237c6cde491"
+}

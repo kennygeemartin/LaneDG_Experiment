@@ -1,0 +1,5 @@
+{
+  "reason": "Mirror train/val image directories include images/; image IDs, partitions, groups and sampling unchanged",
+  "previous_selection_sha256": "5fc6596d48b0f5fc72478a2a97e791cfd40bb1ca242c09ed4d7d24d259cf05b4",
+  "corrected_selection_sha256": "bd3d1335c911707baa6052d85586bbb088f790e1467859af6c3cea29925d5032"
+}

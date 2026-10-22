@@ -8,5 +8,11 @@ __pycache__/
 .pytest_cache/
 .venv/
 venv/
+.runtime/
+benchmark_artifacts/recovery/
+benchmark_artifacts/qa/*_overlays.png
+benchmark_artifacts/qa/*/
+.runtime/
+benchmark_artifacts/qa/*/
+benchmark_artifacts/recovery/public_source/
 lanedg_experiment/full_protocol/
-

@@ -1,58 +1,37 @@
-project: yolov8n_lanedg_cross_dataset
-seed: 42
-datasets:
-  tusimple:
-    kaggle: manideep1108/tusimple
-    train_split: train
-    validation_split: val
-    evaluation_split: test
-  culane:
-    kaggle: manideep1108/culane
-    train_split: train
-    validation_split: val
-    evaluation_split: test
-  bdd100k:
-    kaggle: marquis03/bdd100k
-    train_split: train
-    validation_split: val
-    # Public test labels are withheld; use labeled validation for metrics.
-    evaluation_split: val
-model:
-  name: YOLOv8n-LaneDG
-  task: instance-segmentation
-  source_required: true
+# Descriptive defaults for the real-image semantic rerun.
+# The executed authoritative configuration is runs/real_v1/protocol.json.
+# This YAML is documentation; the runner uses its explicit CLI arguments.
+model: LaneDG-Semantic-Reimplementation-v1
+architecture_status: documented_semantic_adaptation_not_verified_original_instance_model
+parameters: 1141793
+sampling:
+  seed: 42
+  train: 80
+  validation: 20
+  evaluation: 40
+  policy: one_random_frame_per_sampled_sequence_group
+  bdd100k_evaluation_partition: labeled_val_disjoint_from_validation
 training:
-  image_size: 640
-  epochs: 500
-  batch_size: 16
+  seeds: [42, 43, 44]
+  epochs: 8
+  size: 256
+  batch: 4
   optimizer: AdamW
-  initial_learning_rate: 0.01
+  lr: 0.001
   weight_decay: 0.0005
-  scheduler: cosine
   warmup_epochs: 3
-  imagenet_mean: [0.485, 0.456, 0.406]
-  imagenet_std: [0.229, 0.224, 0.225]
-  loss_weights:
-    bce: 1.0
-    dice: 1.0
-    continuity: 0.5
-    localization: 2.0
-    classification: 1.0
-    mask: 3.0
+  scheduler: cosine_with_0.01_floor
+  initialization: random
+  loss: masked_BCE_plus_Dice_plus_0.5_bidirectional_continuity
+selection:
+  checkpoint: minimum_source_validation_loss
+  threshold: maximum_source_validation_pixel_F1
+  target_data_used: false
 evaluation:
-  confidence_threshold: 0.25
-  nms_iou_threshold: 0.65
-  metrics: [precision, recall, f1, iou, map50, map50_95]
-  fine_tuning_on_target: false
-  matrix:
-    - [tusimple, tusimple]
-    - [tusimple, culane]
-    - [tusimple, bdd100k]
-    - [culane, tusimple]
-    - [culane, culane]
-    - [culane, bdd100k]
-    - [bdd100k, tusimple]
-    - [bdd100k, culane]
-    - [bdd100k, bdd100k]
-
-
+  frozen_matrix: 3_by_3_per_seed
+  metrics: [pixel_precision, pixel_recall, pixel_f1, mean_image_iou]
+  descriptive_success_rates: [mask_iou_success_50, mask_iou_success_50_95]
+  bootstrap: sequence_cluster_percentile
+  bootstrap_repetitions: 2000
+  bootstrap_seed: 20261022
+  confidence_level: 0.95

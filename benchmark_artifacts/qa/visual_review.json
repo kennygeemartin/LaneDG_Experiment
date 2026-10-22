@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "reviewer": "Codex visual inspection",
+  "review_date": "2026-10-22",
+  "scope": "Nine image/mask pairs per benchmark, covering training, validation, evaluation; all 420 annotations parsed and coordinate transforms exported",
+  "findings": "Sampled lane masks align with road markings; BDD exclusion supports shown yellow; CULane annotated occluded portions retained; negative examples retained",
+  "overlay_sha256": {
+    "tusimple": "12025a02d414b2fc35052b7089b14da71b566b3e22bb42fa4c087e02fb9b4b06",
+    "culane": "603b9b850c7cd9c3ee98ea7d169987c33775edef3c3cfdb04a6a98f097bf3244",
+    "bdd100k": "de5541d0dde854d68c541261a2dcce3b2059f64d28ab0e8aaf026cc29a4cc62e"
+  },
+  "manifest_sha256": {
+    "tusimple": "a6640441ec45cb1d46b7116c32df3b75044d692594499bb3f5f91018aba958b4",
+    "culane": "f059d3d68d6806f919e889d5e464b7a5d20df0455fdb6a4f0b29351e036cb356",
+    "bdd100k": "bb5cee48a1ea585ee8e7a3171da8e85b6ba2433c1c784fe47599774a55343169"
+  }
+}

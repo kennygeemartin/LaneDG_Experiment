@@ -1,0 +1,102 @@
+{
+  "config": {
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "epochs": 8,
+    "size": 256,
+    "batch": 4,
+    "lr": 0.001,
+    "weight_decay": 0.0005,
+    "warmup_epochs": 3,
+    "line_width": 3,
+    "threads": 4,
+    "bootstrap_seed": 20261022,
+    "bootstrap_repetitions": 2000
+  },
+  "architecture": {
+    "name": "LaneDG-Semantic-Reimplementation-v1",
+    "status": "documented semantic adaptation; not verified equivalent to cited YOLOv8n-LaneDG",
+    "backbone": "Conv stem; DGF at P2/P3/P5; C2f; SPPF",
+    "neck": "C2f FPN-PAN with both top-down and bottom-up paths",
+    "head": "EUCB multi-scale semantic decoder; one full-resolution binary logit map",
+    "channel_widths": [
+      16,
+      32,
+      64,
+      96,
+      128
+    ],
+    "differences_from_cited_model": [
+      "semantic union mask replaces instance/prototype/detection outputs",
+      "no CIoU box or object-classification loss, detection confidences, or NMS",
+      "channel widths, C2f repeats, gates, shuffle groups, and decoder are explicit reconstruction choices",
+      "no claim to reproduce the cited paper's parameter count or published scores"
+    ],
+    "reference": "https://doi.org/10.3390/computers15090561",
+    "initialization": "random; no pretrained weights"
+  },
+  "preprocessing": {
+    "task": "binary semantic lane segmentation; not official instance/lane metrics",
+    "resize": "direct stretch to square; OpenCV INTER_LINEAR RGB image; no cropping or letterbox",
+    "coordinates": "x_out=x_in*size/original_width; y_out=y_in*size/original_height; round with numpy.rint",
+    "rasterization": "OpenCV LINE_8 polylines after coordinate transform; width 3 output pixels; no polygon filling",
+    "tusimple": "connect consecutive valid x>=0 samples; split at missing samples; do not extrapolate",
+    "culane": "all annotated lane polylines; corrected annotations_new for train/val; retain annotated occluded portions",
+    "bdd100k_positive": [
+      "lane/single white",
+      "lane/single yellow",
+      "lane/single other",
+      "lane/double white",
+      "lane/double yellow",
+      "lane/double other"
+    ],
+    "bdd100k_ignore": "crosswalks, curbs, vertical lanes, explicit ignore=true and occluded=true lane objects: rasterized support excluded from loss and metrics",
+    "bdd100k_curves": "cubic Bezier segments sampled at 64 intervals; match official Matplotlib Path semantics: first point MOVETO; a C consumes the next three vertices irrespective of their subsequent codes (supports legacy CCCL)",
+    "bdd100k_dashed": "annotated continuous geometry retained, without inventing dash gaps",
+    "occlusion": "no synthesized occluded geometry; retain provided TuSimple/CULane geometry; explicitly occluded BDD lanes ignored",
+    "background": "all pixels not marked positive or ignored; unlabeled lanes are background under this harmonized protocol",
+    "empty_masks": "retain negative images; image IoU=1 for empty prediction and empty truth; otherwise union IoU",
+    "normalization": {
+      "color": "RGB",
+      "scale": "uint8/255",
+      "mean": [
+        0.48500001430511475,
+        0.4560000002384186,
+        0.4059999883174896
+      ],
+      "std": [
+        0.2290000021457672,
+        0.2240000069141388,
+        0.22499999403953552
+      ]
+    }
+  },
+  "manifest_sha256": {
+    "tusimple": "a6640441ec45cb1d46b7116c32df3b75044d692594499bb3f5f91018aba958b4",
+    "culane": "f059d3d68d6806f919e889d5e464b7a5d20df0455fdb6a4f0b29351e036cb356",
+    "bdd100k": "bb5cee48a1ea585ee8e7a3171da8e85b6ba2433c1c784fe47599774a55343169"
+  },
+  "source_code_sha256": {
+    "benchmark/acquire.py": "8ee8d3c38dfd4cc37bb3e3fef9f6103ff10334e28416954184d051d705590197",
+    "benchmark/data.py": "dfffbd78c063e072c47955d742f4c6757b3814be1ca7198b3f7d899a4c716b09",
+    "benchmark/index_archives.py": "6ed0c0d45cd7dc45a2452af4567aac17e1ea1fd77af3f417db70cfe6f052bb46",
+    "benchmark/metrics.py": "1df67a5645523bb54d36efbcddce54c3c4c2558396cfdc2b334e785374daf038",
+    "benchmark/model.py": "7fbc243279933bf5fe78d45d9b0d6f008574af2b15d3a94633ff8d9e2610056d",
+    "benchmark/prepare.py": "2b729ddee024aa8320b4e01b793ecd7a8026b19b0cce428d392e49f88ee81731",
+    "benchmark/qa.py": "f4481d322671228e3cdebc87d7d9461ced0174917b3deb2809066f9bc427f653",
+    "benchmark/run.py": "56aeda97c96fe970225f2f056f84c4fb46544a19c499cb7fa74295400dbaed60",
+    "benchmark/__init__.py": "902a9c97cbd9d27e8632b5a66af0427aae1d393c51a2a7f1846fe7e7c46e46a1"
+  },
+  "visual_review_sha256": "091db1515e3daa6806fad956c6343950095b8297ad343cc1ade7caf017e0f113",
+  "selection": "minimum source-validation loss checkpoint; threshold chosen from source-validation data only",
+  "evaluation": "all three source models frozen; same three held-out target subsets; all training complete before any target metrics",
+  "loss": "masked BCE + per-image Dice + 0.5 bidirectional valid-lane continuity",
+  "augmentation": "epoch-varying horizontal flip p=0.5 and brightness +/-0.08, contrast 0.85..1.15; training only",
+  "precision_zero_division": 0,
+  "recall_zero_division": 0,
+  "uncertainty": "2000 sequence-cluster bootstrap resamples per checkpoint; training seeds reported separately",
+  "original_execution_protocol_sha256": "2ec6446c2dc666168480b01ec1230c64f0097a5f8187d1904a98be8628234bc4"
+}

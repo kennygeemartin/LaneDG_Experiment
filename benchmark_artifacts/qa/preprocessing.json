@@ -1,0 +1,36 @@
+{
+  "task": "binary semantic lane segmentation; not official instance/lane metrics",
+  "resize": "direct stretch to square; OpenCV INTER_LINEAR RGB image; no cropping or letterbox",
+  "coordinates": "x_out=x_in*size/original_width; y_out=y_in*size/original_height; round with numpy.rint",
+  "rasterization": "OpenCV LINE_8 polylines after coordinate transform; width 3 output pixels; no polygon filling",
+  "tusimple": "connect consecutive valid x>=0 samples; split at missing samples; do not extrapolate",
+  "culane": "all annotated lane polylines; corrected annotations_new for train/val; retain annotated occluded portions",
+  "bdd100k_positive": [
+    "lane/single white",
+    "lane/single yellow",
+    "lane/single other",
+    "lane/double white",
+    "lane/double yellow",
+    "lane/double other"
+  ],
+  "bdd100k_ignore": "crosswalks, curbs, vertical lanes, explicit ignore=true and occluded=true lane objects: rasterized support excluded from loss and metrics",
+  "bdd100k_curves": "cubic Bezier segments sampled at 64 intervals; match official Matplotlib Path semantics: first point MOVETO; a C consumes the next three vertices irrespective of their subsequent codes (supports legacy CCCL)",
+  "bdd100k_dashed": "annotated continuous geometry retained, without inventing dash gaps",
+  "occlusion": "no synthesized occluded geometry; retain provided TuSimple/CULane geometry; explicitly occluded BDD lanes ignored",
+  "background": "all pixels not marked positive or ignored; unlabeled lanes are background under this harmonized protocol",
+  "empty_masks": "retain negative images; image IoU=1 for empty prediction and empty truth; otherwise union IoU",
+  "normalization": {
+    "color": "RGB",
+    "scale": "uint8/255",
+    "mean": [
+      0.48500001430511475,
+      0.4560000002384186,
+      0.4059999883174896
+    ],
+    "std": [
+      0.2290000021457672,
+      0.2240000069141388,
+      0.22499999403953552
+    ]
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "tusimple": {
+    "counts": {
+      "validation": 20,
+      "evaluation": 40,
+      "train": 80
+    },
+    "unique_images": 140,
+    "unique_sequence_groups": 140,
+    "image_hashes_verified": true,
+    "annotation_hashes_verified": true,
+    "role_leakage": false,
+    "duplicate_decoded_images": false,
+    "limitation": "TuSimple clip IDs and CULane video IDs verified; longer-drive linkage beyond supplied IDs unavailable. BDD uses conservative filename-prefix groups.",
+    "near_duplicate_candidates_phash_distance_le_4": [],
+    "empty_masks": 0,
+    "positive_masks": 140
+  },
+  "culane": {
+    "counts": {
+      "validation": 20,
+      "evaluation": 40,
+      "train": 80
+    },
+    "unique_images": 140,
+    "unique_sequence_groups": 140,
+    "image_hashes_verified": true,
+    "annotation_hashes_verified": true,
+    "role_leakage": false,
+    "duplicate_decoded_images": false,
+    "limitation": "TuSimple clip IDs and CULane video IDs verified; longer-drive linkage beyond supplied IDs unavailable. BDD uses conservative filename-prefix groups.",
+    "near_duplicate_candidates_phash_distance_le_4": [],
+    "empty_masks": 24,
+    "positive_masks": 116
+  },
+  "bdd100k": {
+    "counts": {
+      "validation": 20,
+      "evaluation": 40,
+      "train": 80
+    },
+    "unique_images": 140,
+    "unique_sequence_groups": 140,
+    "image_hashes_verified": true,
+    "annotation_hashes_verified": true,
+    "role_leakage": false,
+    "duplicate_decoded_images": false,
+    "limitation": "TuSimple clip IDs and CULane video IDs verified; longer-drive linkage beyond supplied IDs unavailable. BDD uses conservative filename-prefix groups.",
+    "near_duplicate_candidates_phash_distance_le_4": [],
+    "empty_masks": 27,
+    "positive_masks": 113
+  }
+}

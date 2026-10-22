@@ -15,15 +15,6 @@ jobs:
           cache: pip
       - run: pip install -r requirements.txt
       - name: Compile Python sources
-        run: python -m compileall -q experiment.py lanedg_experiment
-      - name: Validate model parameter count and output
-        run: |
-          python - <<'PY'
-          import torch
-          from lanedg_experiment.models import LaneDG
-          model = LaneDG().eval()
-          assert sum(p.numel() for p in model.parameters()) == 405_088
-          with torch.no_grad():
-              assert model(torch.randn(1, 3, 64, 64)).shape == (1, 1, 64, 64)
-          PY
-
+        run: python -m compileall -q experiment.py benchmark scripts lanedg_experiment
+      - name: Verify annotation transforms, metrics, leakage controls, and model gradients
+        run: python -m pytest tests -q -p no:cacheprovider
